@@ -15,8 +15,8 @@ app.use(bodyParser.json());
 // Define a POST endpoint for scraping
 app.post("/scrap", async (req, res) => {
   try {
-    await scrapJob(req.body); // Wait for scrapJob to complete
-    res.status(200).send("Data received successfully!");
+    const dataToReturn = await scrapJob(req.body); // Wait for scrapJob to complete
+    res.status(200).send(dataToReturn);
   } catch (error) {
     res.status(500).send("An error occurred while processing your request."); // Respond with an error status code
   }
