@@ -1,7 +1,7 @@
 import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
-import scrapJob from "./service/scrapFromDescription.js";
+import scrapJob from "../service/scrapFromDescription.js";
 
 const app = express();
 const port = 3000;
