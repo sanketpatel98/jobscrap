@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scrap Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    
+    .container {
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      max-width: 500px; /* Increased width for better display */
+      width: 100%;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
+      color: #555;
+    }
+    
+    input[type="text"] {
+      width: calc(100% - 22px);
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+    
+    button {
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: calc(100% - 40px); /* Adjusted for spinner */
+    }
+    
+    button:hover {
+      background-color: #0056b3;
+    }
+    
+    #success-message, #error-message {
+      display: none;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    #success-message {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    #error-message {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .spinner {
+      display: none;
+      border: 4px solid #f3f3f3; /* Light grey */
+      border-top: 4px solid #007bff; /* Blue */
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin-left: 10px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .spinner-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .data-display {
+      text-align: left;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Scrap Form</h1>
+    <form id="scrap-form">
+      <label for="data-input">Enter data:</label>
+      <input type="text" id="data-input" name="data" required>
+      <div class="spinner-container">
+        <button type="submit">Submit</button>
+        <div class="spinner" id="spinner"></div>
+      </div>
+    </form>
+    <div id="success-message">
+      Data submitted successfully!
+      <div class="data-display" id="data-display"></div>
+    </div>
+    <div id="error-message">Failed to submit data. Please try again.</div>
+  </div>
+
+  <script>
+    document.getElementById('scrap-form').addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevent the default form submission
+
+      const dataInput = document.getElementById('data-input').value;
+      const spinner = document.getElementById('spinner');
+      const successMessage = document.getElementById('success-message');
+      const errorMessage = document.getElementById('error-message');
+      const dataDisplay = document.getElementById('data-display');
+      
+      // Show spinner
+      spinner.style.display = 'block';
+      
+      // Create the payload in the required JSON format
+      const payload = { jd: dataInput };
+
+      try {
+        const response = await fetch('/scrap', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          const responseData = await response.json();
+          
+          // Clear the text box
+          document.getElementById('data-input').value = '';
+          
+          // Show the success message and display the data
+          successMessage.style.display = 'block';
+          dataDisplay.innerHTML = formatData(responseData);
+          setTimeout(() => {
+            successMessage.style.display = 'none';
+          }, 5000);
+        } else {
+          // Show error message
+          errorMessage.style.display = 'block';
+          setTimeout(() => {
+            errorMessage.style.display = 'none';
+          }, 5000);
+        }
+      } catch (error) {
+        // Show error message if there is a network error
+        errorMessage.style.display = 'block';
+        setTimeout(() => {
+          errorMessage.style.display = 'none';
+        }, 5000);
+      } finally {
+        // Hide the spinner
+        spinner.style.display = 'none';
+      }
+    });
+
+    function formatData(data) {
+      if (!Array.isArray(data) || data.length === 0) {
+        return 'No data available.';
+      }
+
+      return data.map(item => `
+        <div>
+          <strong>Company:</strong> ${item.company}<br>
+          <strong>Level:</strong> ${item.level}<br>
+          <strong>Location:</strong> ${item.location}<br>
+          <strong>Title:</strong> ${item.title}<br>
+          <hr>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>
