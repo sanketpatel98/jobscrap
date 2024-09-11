@@ -4,6 +4,7 @@ import express from 'express';
 import scrapJob from '../service/scrapFromDescription.js';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { postDataToGoogleSheets } from '../service/postDataToGoogleSheets.js';
 
 const app = express();
 const port = 3000;
@@ -25,6 +26,7 @@ app.use(bodyParser.json());
 app.post('/scrap', async (req, res) => {
   try {
     const dataToReturn = await scrapJob(req.body); // Wait for scrapJob to complete
+    await postDataToGoogleSheets(dataToReturn[0]);
     res.status(200).send(dataToReturn);
   } catch (error) {
     res.status(500).send('An error occurred while processing your request.'); // Respond with an error status code
