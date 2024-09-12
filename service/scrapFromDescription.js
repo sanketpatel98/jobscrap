@@ -15,7 +15,6 @@ const scrapJob = (data) => {
 
     return aimockdata(number, parameters, finalData)
         .then((result) => {
-            console.log(result);
             return result; // Resolve the promise with the result
         })
         .catch((error) => {
