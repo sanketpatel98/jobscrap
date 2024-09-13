@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const router = Router();
 
-router.get("/coverletter", (req, res) => {
+router.get("/makecoverletter", (req, res) => {
   res.sendFile(join(__dirname, "../public", "coverletter.html"));
 });
 
