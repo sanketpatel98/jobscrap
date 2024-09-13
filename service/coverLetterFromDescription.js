@@ -56,13 +56,22 @@ const coverLetterFromDescription = async (data) => {
   const coverletter = await aimockdata(number, parameters, finalData);
 
   parameters = [{ name: "coverletter", isArray: false }];
+  const signature =
+    "Sanket Patel \npatelsanketr98@gmail.com \n226-627-2498\n" + portfolioLink;
   finalData =
     coverletter[0].coverletter +
     "only use information from the resume given, do not include fake data. It seems like the first paragraph contains some data which is not related to the resume below. change it to remove unnecessary experience and technology mentioned in the above cover letter. I only have 2 years of experience as per the given resume below. " +
     resume +
-    "add  this in the end if not added already: Sanket Patel \npatelsanketr98@gmail.com \n226-627-2498\n" +
-    portfolioLink;
+    "add  this in the end if not added already: " + signature ;
 
+  
+
+  const notAFinalCoverLetter = await aimockdata(number, parameters, finalData);
+
+  finalData =
+    notAFinalCoverLetter[0].coverletter +
+    "make the above cover letter better. Use the below resume: " +
+    resume + "add  this in the end if not added already: " + signature ;
   const finalCoverLetter = await aimockdata(number, parameters, finalData);
 
   return finalCoverLetter;
