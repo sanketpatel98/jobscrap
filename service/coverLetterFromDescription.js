@@ -1,6 +1,5 @@
 import aimockdata from "aimockdata";
 import scrapJob from "./scrapFromDescription.js";
-import { postDataToGoogleDocs } from "./postDataToGoogleDocs.js";
 
 const coverLetterFromDescription = async (data) => {
   var number = 1;
@@ -32,8 +31,6 @@ const coverLetterFromDescription = async (data) => {
 
   const portfolioLink = "https://sanketpatel98.github.io/portfolio";
 
-  // total 3 phases => 1) hook, 2) adding resume  and 3) making clear(add links).
-  // Phase 1) hook,
   var parameters = [{ name: "hook", isArray: false }];
   var finalData =
     "You are currently seeking for Software developer job in the IT industry and you are applying for this " +
@@ -44,8 +41,6 @@ const coverLetterFromDescription = async (data) => {
     jd;
 
   const hook = await aimockdata(number, parameters, finalData);
-
-  //phase 2) adding resume
 
   parameters = [{ name: "coverletter", isArray: false }];
   finalData =
@@ -60,8 +55,6 @@ const coverLetterFromDescription = async (data) => {
     ". Do not make up data, only use info from the given resume";
   const coverletter = await aimockdata(number, parameters, finalData);
 
-  //phase 3) making clear(add links - optional).
-
   parameters = [{ name: "coverletter", isArray: false }];
   finalData =
     coverletter[0].coverletter +
@@ -72,14 +65,7 @@ const coverLetterFromDescription = async (data) => {
 
   const finalCoverLetter = await aimockdata(number, parameters, finalData);
 
-  postDataToGoogleDocs(finalCoverLetter[0])
-    .then((result) => {
-      return result; // Resolve the promise with the result
-    })
-    .catch((error) => {
-      console.error("Error generating data:", error);
-      throw error; // Reject the promise with the error
-    });
+  return finalCoverLetter;
 };
 
 export default coverLetterFromDescription;

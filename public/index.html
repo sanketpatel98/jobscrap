@@ -143,9 +143,9 @@
       
       // Create the payload in the required JSON format
       const payload = { jd: dataInput };
-
+      
       try {
-        const response = await fetch('/scrap', {
+        const response = await fetch('/filldata', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
