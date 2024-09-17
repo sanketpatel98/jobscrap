@@ -57,7 +57,7 @@ const coverLetterFromDescription = async (data) => {
 
   parameters = [{ name: "coverletter", isArray: false }];
   const signature =
-    "Sanket Patel \npatelsanketr98@gmail.com \n226-627-2498\n" + portfolioLink;
+    "Sanket Patel \npatelsanketr98@gmail.com \n226-637-2498\n" + portfolioLink;
   finalData =
     coverletter[0].coverletter +
     "only use information from the resume given, do not include fake data. It seems like the first paragraph contains some data which is not related to the resume below. change it to remove unnecessary experience and technology mentioned in the above cover letter. I only have 2 years of experience as per the given resume below. " +
